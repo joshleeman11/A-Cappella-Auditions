@@ -127,10 +127,11 @@ app.post("/confirmation", async (req, res) => {
 app.get("/adminGroupForm", (request, response) => {
     response.render("adminGroupForm");
 });
-
+global.group = "";
 app.use(bodyParser.urlencoded({ extended: false }));
 app.post("/processGroup", async (request, response) => {
     const group = request.body.musicGroup;
+    global.group = request.body.musicGroup;
     const groupApplicantsInfo = await lookupGroupApplicants(group);
     console.log(groupApplicantsInfo);
 
@@ -144,10 +145,29 @@ app.post("/processGroup", async (request, response) => {
 });
 
 app.use(bodyParser.urlencoded({ extended: false }));
-app.post("/decisionsConfirmation", (request, response) => {
+app.post("/decisionsConfirmation", async (request, response) => {
     const groupDecisions = request.body;
     console.log(groupDecisions);
-    response.render("decisionsConfirmation");
+
+    try {
+        await client.connect();
+        let groupConfirmation = "";
+        for (const [name, decision] of Object.entries(groupDecisions)) {
+            await client
+                .db(databaseAndCollection.db)
+                .collection(databaseAndCollection.collection)
+                .updateOne(
+                    { group: global.group, name: name },
+                    { $set: { accepted: decision } }
+                );
+            groupConfirmation += `<tr><td>${name}</td><td>${decision}</td></tr>`;
+        }
+        response.render("decisionsConfirmation", { groupConfirmation: groupConfirmation });
+    } catch (e) {
+        console.error(e);
+    } finally {
+        await client.close();
+    }
 });
 
 app.get("/auditionee", (request, response) => {
