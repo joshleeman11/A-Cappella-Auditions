@@ -7,6 +7,8 @@
 ## App Description
 Our application is designed to streamline the A Cappella auditions process all into one platform, including applications and decisions.
 
+USE PORT NUMBER 3000
+
 ## API Links
 
 ## YouTube Demo Video
