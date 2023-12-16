@@ -40,7 +40,6 @@ async function songLyrics(songTitle, artist) {
         if (!response.ok) {
             throw new Error('Network response was not ok.');
         }
-    
         const data = await response.json()
         const songs = data?.response?.hits;
         const song = songs.find(song => song?.result?.title === songTitle)
