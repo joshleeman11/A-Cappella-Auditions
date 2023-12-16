@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8" />
+	<title>Display Applicant Decisions</title>
+</head>
+
+<body>
+	<h1>Make Your Decisions</h1>
+    <form action="http://localhost:3000/decisionsConfirmation" method="post">
+        <table border="1">
+            <tr>
+                <th>Name</th>
+                <th>Yes/No</th>
+            </tr>
+            <%- groupTable %>
+        </table>
+        <br>
+        <input type="reset" value="Clear All Decisions">
+        <input type="submit" value="Submit Decisions">
+    </form>
+    <br>
+    <a href="/">HOME</a>
+</body>
+</html>

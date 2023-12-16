@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>A Cappella Auditions</title>
+    </head>
+    <body>
+        <h1>Audition Form</h1>
+        <form action="/confirmation" method="post">
+            <fieldset>
+                <label>Name:
+                    <input type="text" name="name">
+                    Terpmail: 
+                    <input type="text" name="email"><br><br>
+                    Time:
+                    <input type="text" name="time">
+                    Which group would you like to apply for?<br>
+                    <select name="group">
+                        <option value="Ethnobeat" selected>Ethnobeat</option>
+                        <option value="DaCadence">DaCadence</option>
+                        <option value="Rak Shalom">Rak Shalom</option>
+                        <option value="Kol Sasson">Kol Sasson</option>
+                    </select><br><br>
+                    Tell us about yourself!<br>
+                    <textarea name="bginfo"></textarea>
+                </label>
+            </fieldset>
+            <hr>
+            <input type="reset" value="Reset">
+            <input type="submit" value="Submit Application">
+        </form>
+    </body>
+</html>
