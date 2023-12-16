@@ -1,6 +1,4 @@
 const fs = require("fs");
-const request = require("request");
-const token = EYNAOT7TASSWNIZPJM6K;
 const express = require("express");
 const { request } = require("http");
 const path = require("path");
@@ -24,8 +22,6 @@ const client = new MongoClient(uri, {
     useUnifiedTopology: true,
     serverApi: ServerApiVersion.v1,
 });
-
-https://www.eventbriteapi.com/v3/users/me/?token=EYNAOT7TASSWNIZPJM6K
 
 async function addAudition(params) {
     try {
