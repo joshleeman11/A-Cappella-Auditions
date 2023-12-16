@@ -158,7 +158,7 @@ process.stdout.write(prompt);
 process.stdin.setEncoding("utf-8");
 process.stdin.on("readable", () => {
     const dataInput = process.stdin.read();
-    const command = dataInput.trim();
+    const command = dataInput?.trim();
     if (dataInput !== null) {
         if (command === "stop") {
             console.log("Shutting down the server");
