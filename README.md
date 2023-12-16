@@ -1,6 +1,6 @@
 # A-Cappella-Auditions
 ## Team Members
-1. Tyler Young (DIREC)
+1. Tyler Young (116493239)
 2. Jonathan Ginsberg (116516754)
 3. Joshua Leeman (116475709)
 

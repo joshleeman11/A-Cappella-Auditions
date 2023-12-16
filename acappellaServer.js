@@ -8,6 +8,12 @@ const bodyParser = require("body-parser");
 require("dotenv").config({ path: path.resolve(__dirname, ".env") });
 const user = process.env.MONGO_DB_USERNAME;
 const passWord = process.env.MONGO_DB_PASSWORD;
+const clientID =
+    "XCv5ehJ2H9CUo5kNJWOx_MjimBLaDgkZhyqd63u1EJIwElQ2UqPIyZwJtE7g9R4h";
+const clientSecret =
+    "oqLQUPLplPiPoFxT8Rf7frj6YrXrNotb6ZsSeiUPg8KhJlF9diyLa-8ICyCUbR4WI5rIxrZfj1rwaKwlMrpfmg";
+const clientAccessToken =
+    "N7H8OktHuh8qn9AmafVjCyi2oL7gm3cGrlQyATxsHPvarzm_4hmpZGDcG5wj3wZT";
 
 const uri = `mongodb+srv://${user}:${passWord}@cluster0.ggavldq.mongodb.net/?retryWrites=true&w=majority`;
 
@@ -23,7 +29,31 @@ const client = new MongoClient(uri, {
     serverApi: ServerApiVersion.v1,
 });
 
+async function songLyrics(songTitle, artist) {
+    try {
+        const response = await fetch(`https://api.genius.com/search?q=${artist}`, {
+            headers: {
+                Authorization: `Bearer ${clientAccessToken}`,
+            },
+        })
+
+        if (!response.ok) {
+            throw new Error('Network response was not ok.');
+        }
+    
+        const data = await response.json()
+        const songs = data?.response?.hits;
+        const song = songs.find(song => song?.result?.title === songTitle)
+        return song?.result?.url
+    
+    } catch (e) {
+        console.error("Error searching for song:", error)
+        return null
+    }
+}
+
 async function addAudition(params) {
+    console.log(params)
     try {
         await client.connect();
         const result = await client
@@ -60,7 +90,7 @@ async function lookupGroupAcceptances(group) {
         const cursor = await client
             .db(databaseAndCollection.db)
             .collection(databaseAndCollection.collection)
-            .find({ group: group, accepted: 'yes' });
+            .find({ group: group, accepted: "yes" });
         const result = await cursor.toArray();
         return result;
     } catch (e) {
@@ -82,27 +112,14 @@ app.get("/audition", (req, res) => {
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.post("/confirmation", async (req, res) => {
-    let { name, email, time, group, bginfo } = req.body;
-    let params = {
+    const { name, email, song, artist, group, bginfo } = req.body;
+    const params = {
         name: name,
         email: email,
-        time: time,
         group: group,
         bginfo: bginfo,
+        songLyrics: `<a href="${await songLyrics(song, artist)}">${song} Lyrics</a>`
     };
-    const eventDetails = {
-        event: {
-            name: {
-                html: `${name}'s ${group} Audition`
-            },
-            description: {
-                html: "Come show us what you got!"
-            },
-            start: {
-                timezone: 'America/New_York'
-            }
-        }
-    }
     await addAudition(params);
     res.render("processApplication.ejs", params);
 });
@@ -122,16 +139,16 @@ app.post("/processGroup", async (request, response) => {
         groupTable += `<tr><td><strong>${applicant.name}</strong></td>
                            <td><input type="radio" name="${applicant.name}" id="yes" value="yes">/<input type="radio" name="${applicant.name}" id="no" value="no"></td></tr>`;
     });
-    groupTable += "</table>"
-    response.render("groupFormProcess", {groupTable: groupTable});
+    groupTable += "</table>";
+    response.render("groupFormProcess", { groupTable: groupTable });
 });
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.post("/decisionsConfirmation", (request, response) => {
-    const groupDecisions = request.body
-    console.log(groupDecisions)
-    response.render("decisionsConfirmation")
-})
+    const groupDecisions = request.body;
+    console.log(groupDecisions);
+    response.render("decisionsConfirmation");
+});
 
 app.get("/auditionee", (request, response) => {
     response.render("auditionee");
@@ -140,13 +157,12 @@ app.get("/auditionee", (request, response) => {
 app.use(bodyParser.urlencoded({ extended: false }));
 app.post("/auditionee", async (request, response) => {
     const group = request.body.groupDropdown;
-    const groupAcceptances = await lookupGroupAcceptances(group)
-    let table = "<table border = 1><tr><th>Accepted</th></tr>"
+    const groupAcceptances = await lookupGroupAcceptances(group);
+    let table = "<table border = 1><tr><th>Accepted</th></tr>";
     groupAcceptances.forEach((acceptance) => {
-        table +=
-        `<table border = 1><tr><th>Accepted</th></tr><tr><td>${acceptance.name}</td></tr></table>`;
-    })
-    
+        table += `<table border = 1><tr><th>Accepted</th></tr><tr><td>${acceptance.name}</td></tr></table>`;
+    });
+
     response.render("groupList", { group: group, table: table });
 });
 
