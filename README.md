@@ -2,7 +2,7 @@
 ## Team Members
 1. Tyler Young (tly8)
 2. Jonathan Ginsberg (ginsberg)
-3. Joshua Leeman (116475709)
+3. Joshua Leeman (jleeman)
 
 ## App Description
 Our application is designed to streamline the A Cappella auditions process all into one platform, including applications and decisions.
