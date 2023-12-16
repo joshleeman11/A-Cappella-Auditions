@@ -52,7 +52,6 @@ async function songLyrics(songTitle, artist) {
 }
 
 async function addAudition(params) {
-    console.log(params)
     try {
         await client.connect();
         const result = await client
@@ -131,7 +130,6 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.post("/processGroup", async (request, response) => {
     const group = request.body.musicGroup;
     const groupApplicantsInfo = await lookupGroupApplicants(group);
-    console.log(groupApplicantsInfo);
 
     let groupTable = "";
     groupApplicantsInfo.forEach((applicant) => {
@@ -145,7 +143,6 @@ app.post("/processGroup", async (request, response) => {
 app.use(bodyParser.urlencoded({ extended: false }));
 app.post("/decisionsConfirmation", (request, response) => {
     const groupDecisions = request.body;
-    console.log(groupDecisions);
     response.render("decisionsConfirmation");
 });
 
