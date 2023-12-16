@@ -1,7 +1,7 @@
 # A-Cappella-Auditions
 ## Team Members
 1. Tyler Young (116493239)
-2. Jonathan Ginsberg (116516754)
+2. Jonathan Ginsberg (ginsberg)
 3. Joshua Leeman (116475709)
 
 ## App Description
