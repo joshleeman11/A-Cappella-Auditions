@@ -177,8 +177,9 @@ app.post("/auditionee", async (request, response) => {
     const groupAcceptances = await lookupGroupAcceptances(group);
     let table = "<table border = 1><tr><th>Accepted</th></tr>";
     groupAcceptances.forEach((acceptance) => {
-        table += `<table border = 1><tr><th>Accepted</th></tr><tr><td>${acceptance.name}</td></tr></table>`;
+        table += `<tr><td>${acceptance.name}</td></tr>`;
     });
+    table += "</table>"
 
     response.render("groupList", { group: group, table: table });
 });

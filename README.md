@@ -7,7 +7,11 @@
 ## App Description
 Our application is designed to streamline the A Cappella auditions process all into one platform, including applications and decisions.
 
-USE PORT NUMBER 3000
+### NOTE
+1. USE PORT NUMBER 3000
+2. Not all songs have lyrics on the website that the Genius API uses. If you want to be sure a song exists while running the app, look for your song at https://genius.com/
+
+
 
 ## API Links
 Genius API: https://docs.genius.com/
